@@ -1,0 +1,15 @@
+from random import randint
+
+
+def gen_random(num_count: int, begin: int, end: int):
+    assert begin < end, \
+        "\n[ArgumentError] -> BEGIN > END"
+    for _ in range(num_count):
+        yield randint(begin, end)
+
+
+if __name__ == "__main__":
+    print("Run with args ('10, 5, 30'):")
+    # Run
+    for callback in gen_random(10, 5, 30):
+        print(callback)
