@@ -1,0 +1,39 @@
+def field(items: list[dict] | tuple[dict], *args: str):
+    assert len(args) > 0, \
+        "\n[ArgumentError] -> No keys specified to print!"
+
+    # assert len(set(map(lambda d: tuple(d.keys()), (d for d in items)))) == 1, \
+    #     "\n[ArgumentError] -> Goods list have dicts with different keys"
+
+    assert tuple(arg for arg in args if arg in items[0].keys()) == args, \
+        "\n[ArgumentError] -> Selected keys are not in goods list!"
+
+    if len(args) == 1:
+        for product in items:
+            yield product[args[0]]
+    else:
+        for product in items:
+            yield {arg: product[arg] for arg in args}
+
+
+if __name__ == "__main__":
+    goods = [
+        {'title': 'Ковер', 'price': 2000, 'color': 'green'},
+        {'title': 'Диван для отдыха', 'price': 5300, 'color': 'black'}
+    ]
+
+    print("Testing...")
+
+    # Testing
+    assert tuple(i for i in field(goods, 'title')) == ('Ковер', 'Диван для отдыха'), \
+        "\n[TestError][#1] -> -Failed-"
+    assert tuple(i for i in field(goods, 'title', 'price')) == ({'title': 'Ковер', 'price': 2000},
+                                                                {'title': 'Диван для отдыха', 'price': 5300}), \
+        "\n[TestError][#2] -> -Failed-"
+
+    print("All tests passed!\n")
+
+    print("Run with args ('title, color'):")
+    # Run
+    for callback in field(goods, 'title', "color"):
+        print(callback)
