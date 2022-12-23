@@ -1,0 +1,25 @@
+from time import time as now
+from time import sleep
+from contextlib import contextmanager
+
+
+class cm_timer_1():
+    def __enter__(self):
+        self.start = now()
+
+    def __exit__(self, *args, **kwargs):
+        print(f"Time: {now() - self.start}")
+
+
+@contextmanager
+def cm_timer_2():
+    start = now()
+    yield
+    print(f"Time: {now() - start}")
+
+
+if __name__ == '__main__':
+    with cm_timer_1():
+        sleep(2.4)
+    with cm_timer_2():
+        sleep(2.5)
